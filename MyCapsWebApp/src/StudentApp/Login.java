@@ -1,4 +1,4 @@
-package com.caps;
+package StudentApp;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//@WebServlet("/loginServ")
-public class LoginServlet extends HttpServlet{
+@WebServlet("/login")
+public class Login extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String userId = req.getParameter("sid");
@@ -61,6 +61,11 @@ public class LoginServlet extends HttpServlet{
 			 */
 			PrintWriter out = resp.getWriter();
 			
+			out.println("<html><body>");
+			out.println("<a href = 'http://localhost:8080/MyCapsWebApp/viewstudents'>View All Students</a>");
+			out.println("<table border='2px'>");
+			out.println("<tr><th>sid</th><th>firstname</th><th>lastname</th><th>gender</th><th>password</th><th>type</th></tr>");
+			
 			if(rs.next()){
 		
 				HttpSession session = req.getSession(); //HttpSession
@@ -72,17 +77,19 @@ public class LoginServlet extends HttpServlet{
 				passwd = rs.getString("password");
 				String type = rs.getString("type");
 
-				out.println(regno);
-				out.println(firstname);
-				out.println(lastname);
-				out.println(gender);
-				out.println(passwd);
-				out.println(type);
-				out.println("*********************");
+				out.print("<tr>");
+				out.print("<td>"+regno+"</td>");
+				out.print("<td>"+firstname+"</td>");
+				out.print("<td>"+lastname+"</td>");
+				out.print("<td>"+gender+"</td>");
+				out.print("<td>"+passwd+"</td>");
+				out.print("<td>"+type+"</td>");
+				out.print("</tr>");
 			}else {
 				out.println("Login Failed");
 			}
-		} catch (Exception e) {
+			out.println("</table></body></html>");
+		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			// 5. close all the JDBC Objects
